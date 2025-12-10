@@ -5,7 +5,7 @@ Modern large language models achieve impressive reasoning capabilities with long
 We propose **ARBITRAGE**, a step-level speculative generation framework that dynamically routes generation based on the *relative* advantage of the target model over the draft model. Instead of relying on a fixed acceptance threshold, ARBITRAGE uses a lightweight router trained to predict when the target model is likely to produce a meaningfully better step. This routing approximates an ideal “arbitrage oracle” that always selects the higher-quality step, achieving near-optimal efficiency–accuracy trade-offs. Across multiple mathematical reasoning benchmarks, ARBITRAGE consistently outperforms prior step-level speculative decoding baselines, reducing inference latency by up to approximately 2× at matched accuracy.
 
 <p float="left" align="middle">
-  <img src="./images/method.pdf" width="750">
+  <img src="images/method.png" width="750">
 </p>
 
 
