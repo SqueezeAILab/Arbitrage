@@ -14,6 +14,16 @@ We propose **ARBITRAGE**, a step-level speculative generation framework that dyn
 - `scripts/serve_*.sh`: helpers to launch draft/target/PRM/router OpenAI-style endpoints (sglang or vLLM).
 - `scripts/example_run.sh`: sample sweep over PRM thresholds.
 
+## Run Types
+The `--run_type` argument in `arbitrage.py` controls the step-level routing strategy:
+
+| Run Type | Description |
+|----------|-------------|
+| `rsd` | **Reward-guided Speculative Decoding** – Accepts draft steps if their PRM score exceeds `--prm_threshold`; otherwise falls back to the target model. |
+| `oracle` | **Oracle baseline** – Uses ground-truth advantage (target reward − draft reward > threshold) to decide when to switch, providing an upper bound on routing quality. |
+| `router` | **Learned Router (ARBITRAGE)** – Uses a trained router model to predict when the target offers a meaningful advantage, approximating the oracle without expensive target scoring. |
+| `generate` | **Data generation mode** – Runs both draft and target models at each step and dumps step-level data (responses, rewards) for router training or analysis. |
+
 ## Prerequisites
 - Python 3.10+ with CUDA GPUs for vLLM/sglang.
 - Install dependencies:
@@ -36,7 +46,7 @@ Each script prints the host IP and exposes an OpenAI-compatible endpoint.
 - Draft (fast): `bash scripts/serve_draft.sh` (or `serve_draft_quantized.sh` for GGUF).
 - Target (accurate): `bash scripts/serve_target.sh`.
 - PRM scorer: `bash scripts/serve_prm.sh`.
-- Router model (optional, for `run_type=router`): `bash scripts/serve_router.sh`.
+- Router model (for `run_type=router`): `bash scripts/serve_router.sh`.
 
 ## Acknowledgement
 Our code base mainly builds on [Reward-Guided Speculative Decoding (RSD)](https://github.com/BaohaoLiao/RSD), [Qwen2.5-Math](https://github.com/QwenLM/Qwen2.5-Math), and [skywork-o1-prm-inference](https://github.com/SkyworkAI/skywork-o1-prm-inference).
